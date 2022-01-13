@@ -230,7 +230,7 @@ if __name__ == "__main__":
                     exp_data = receive_data_from_exp()
                     if exp_data == "DATA_START":
                         pass
-                    if exp_data != "DATA_END":
+                    elif exp_data != "DATA_END":
                         writer.writerow(exp_data)
                     else:
                         break
