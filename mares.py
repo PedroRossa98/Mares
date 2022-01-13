@@ -196,10 +196,12 @@ def receive_data_from_exp():
         print(pic_message)
         print("\-------- --------/\n")
     if "DAT" in pic_message:
-        print("INFO FOUND\nEXPERIMENTE STARTED")
+        if (dbuging == "on"):
+            print("INFO FOUND\nEXPERIMENTE STARTED")
         return "DATA_START"
     elif "END" in pic_message:
-        print("INFO FOUND\nEXPERIMENTE ENDED")
+        if (dbuging == "on"):
+            print("INFO FOUND\nEXPERIMENTE ENDED")
         return "DATA_END"
     else:
         #1       3.1911812       9.7769165       21.2292843      25.72
@@ -219,7 +221,8 @@ if __name__ == "__main__":
             do_start()
             name_file=datetime.now()
             name_file = "./"+str(config['DEFAULT']['FOLDER'])+"/"+name_file.strftime("%Y-%m-%d %H:%M:%S")+".csv"
-            print(name_file)
+            if (dbuging == "on"):
+                print(name_file)
             with open(name_file, mode='w') as csv_file:
                 writer = csv.writer(csv_file, delimiter=',')
                 writer.writerow(header_pendulum)
