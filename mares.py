@@ -1,7 +1,9 @@
+from datetime import datetime
+from email import header
 import serial
 import json
 import re
-
+import csv
 import configparser
 import experiment_details as exp
 config = configparser.ConfigParser()
@@ -9,6 +11,7 @@ config.read('pendulum.ini')
 
 serial_port = None
 dbuging = config['DEFAULT']['DEBUG']
+header_pendulum= ['Samples number','Period [s]','g [m/s^2]','Velocity [m/s]','Temperature [ºC]']
 
 def try_to_lock_experiment(serial_port):
     
@@ -21,9 +24,8 @@ def try_to_lock_experiment(serial_port):
     # print(pic_message)
     print("\-------- --------/\n")
     match = re.search(r"^(IDS)\s(?P<exp_name>[^ \t]+)\s(?P<exp_state>[^ \t]+)$",pic_message)
-    # print(config['DEFAULT']['ID'])
     print(match.group("exp_name"))
-    if match.group("exp_name") == config['DEFAULT']['ID']:
+    if match.group("exp_name") != None:
         #LOG_INFO
         print("PIC FOUND ON THE SERIAL PORT")
         if match.group("exp_state") == "STOPED":
@@ -193,7 +195,7 @@ def receive_data_from_exp():
             print("INFO FOUND\nDATA SEND TO THE SERVER")
         pic_message = pic_message.strip()
         pic_message = pic_message.split("\t")
-        return exp.data_to_json(pic_message)
+        return pic_message
 
 
 
@@ -203,3 +205,14 @@ if __name__ == "__main__":
         o, ok=do_config()
         if ok == True:
             do_start()
+            name_file=datetime.now()
+            with open(name_file.strftime("%Y-%m-%d %H:%M:%S")+'.csv', mode='w') as csv_file:
+                writer = csv.writer(csv_file, delimiter=',')
+                writer.writerow(header_pendulum)
+                while True:
+                    exp_data = receive_data_from_exp()
+                    if exp_data != "DATA_END":
+                        writer.writerow(exp_data)
+                    else:
+                        break
+            
