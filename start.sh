@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/usr/bin/python3
 
-python3 mares.py
+/usr/bin/python3 /home/elab/Mares/mares.py
