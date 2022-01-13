@@ -22,12 +22,15 @@ def try_to_lock_experiment(serial_port):
     pic_message = pic_message.strip()
     # print("MENSAGEM DO PIC:\n")
     # print(pic_message)
-    print("\-------- --------/\n")
+        
     match = re.search(r"^(IDS)\s(?P<exp_name>[^ \t]+)\s(?P<exp_state>[^ \t]+)$",pic_message)
-    print(match.group("exp_name"))
+    if (dbuging == "on"):
+        print("\-------- --------/\n")
+        print(match.group("exp_name"))
     if match.group("exp_name") != None:
         #LOG_INFO
-        print("PIC FOUND ON THE SERIAL PORT")
+        if (dbuging == "on"):
+            print("PIC FOUND ON THE SERIAL PORT")
         if match.group("exp_state") == "STOPED":
             return True
         else:
@@ -217,7 +220,7 @@ if __name__ == "__main__":
             name_file=datetime.now()
             name_file = "/"+str(config['DEFAULT']['FOLDER'])+"/"+name_file.strftime("%Y-%m-%d %H:%M:%S")+".csv"
             print(name_file)
-            with open(name_file, mode='wb') as csv_file:
+            with open(name_file, mode='w') as csv_file:
                 writer = csv.writer(csv_file, delimiter=',')
                 writer.writerow(header_pendulum)
                 while True:
