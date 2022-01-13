@@ -206,7 +206,7 @@ if __name__ == "__main__":
         if ok == True:
             do_start()
             name_file=datetime.now()
-            print(name_file.strftime("%Y-%m-%d %H:%M:%S")+'.csv')
+            print("\\"+str(config['DEFAULT']['FOLDER'])+"\\"+name_file.strftime("%Y-%m-%d %H:%M:%S")+".csv")
             # with open(name_file.strftime("%Y-%m-%d %H:%M:%S")+'.csv', mode='w') as csv_file:
             #     writer = csv.writer(csv_file, delimiter=',')
             #     writer.writerow(header_pendulum)
