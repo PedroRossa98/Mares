@@ -1,1 +1,3 @@
 # Mares
+
+sh start.sh
