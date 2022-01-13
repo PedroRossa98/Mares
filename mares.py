@@ -206,13 +206,16 @@ if __name__ == "__main__":
         if ok == True:
             do_start()
             name_file=datetime.now()
-            with open(name_file.strftime("%Y-%m-%d %H:%M:%S")+'.csv', mode='w') as csv_file:
-                writer = csv.writer(csv_file, delimiter=',')
-                writer.writerow(header_pendulum)
-                while True:
-                    exp_data = receive_data_from_exp()
-                    if exp_data != "DATA_END":
-                        writer.writerow(exp_data)
-                    else:
-                        break
+            print(name_file.strftime("%Y-%m-%d %H:%M:%S")+'.csv')
+            # with open(name_file.strftime("%Y-%m-%d %H:%M:%S")+'.csv', mode='w') as csv_file:
+            #     writer = csv.writer(csv_file, delimiter=',')
+            #     writer.writerow(header_pendulum)
+            #     while True:
+            #         exp_data = receive_data_from_exp()
+            #         if exp_data == "DATA_START":
+            #             pass
+            #         if exp_data != "DATA_END":
+            #             writer.writerow(exp_data)
+            #         else:
+            #             break
             
