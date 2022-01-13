@@ -1,5 +1,12 @@
 # Mares
 
+Run the following comands to make sure that the programs are executable:
+```
+chmod +x mares.py
+```
+```
+chmod +x start.sh
+```
 It is needed to edit the `pendulum.ini` file and make sure that the DEV_PORT (/dev/ttyAMA0 or /dev/ttyS0) is corect for your pendulum, and after that you can test the script with the comand:
 
 ```
