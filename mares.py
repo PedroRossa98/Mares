@@ -217,33 +217,35 @@ def receive_data_from_exp():
         return pic_message
 
 def do_experiment():
-    if serial_lock() == True:
-        o, ok=do_config()
-        if ok == True:
-            do_start()
-            name_file=datetime.now()
-            name_file = "./"+str(config['DEFAULT']['FOLDER'])+"/"+name_file.strftime("%Y-%m-%d %H:%M:%S")+".csv"
-            if (dbuging == "on"):
-                print(name_file)
-            with open(name_file, mode='w') as csv_file:
-                writer = csv.writer(csv_file, delimiter=',')
-                writer.writerow(header_pendulum)
-                while True:
-                    exp_data = receive_data_from_exp()
-                    if exp_data == "DATA_START":
-                        pass
-                    elif exp_data != "DATA_END":
-                        writer.writerow(exp_data)
-                    else:
-                        break
+    o, ok=do_config()
+    if ok == True:
+        do_start()
+        name_file=datetime.now()
+        name_file = "./"+str(config['DEFAULT']['FOLDER'])+"/"+name_file.strftime("%Y-%m-%d %H:%M:%S")+".csv"
+        if (dbuging == "on"):
+            print(name_file)
+        with open(name_file, mode='w') as csv_file:
+            writer = csv.writer(csv_file, delimiter=',')
+            writer.writerow(header_pendulum)
+            while True:
+                exp_data = receive_data_from_exp()
+                if exp_data == "DATA_START":
+                    pass
+                elif exp_data != "DATA_END":
+                    writer.writerow(exp_data)
+                else:
+                    break
 
 if __name__ == "__main__":
-    if config['DEFAULT']['ROSSA'] == "on":
-        while True:
-            time_now= int(time.time())
-            if time_now >=(last_time+dt):
-                do_experiment()
-                last_time = time_now
-    else:
-        do_experiment()
+    if serial_lock() == True:
+        if config['DEFAULT']['ROSSA'] == "on":
+            while True:
+                time_now= int(time.time())
+                if time_now >=(last_time+dt):
+                    do_experiment()
+                    last_time = time_now
+        else:
+            do_experiment()
+    else: 
+        print("Serial port not found")
             
