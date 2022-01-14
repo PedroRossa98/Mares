@@ -12,7 +12,7 @@ config = configparser.ConfigParser()
 config.read('pendulum.ini')
 
 last_time = 0
-dt = 1380
+dt = 720
 
 serial_port = None
 dbuging = config['DEFAULT']['DEBUG']
