@@ -6,8 +6,13 @@ import re
 import csv
 import configparser
 import experiment_details as exp
+import time
+
 config = configparser.ConfigParser()
 config.read('pendulum.ini')
+
+last_time = 0
+dt = 1380
 
 serial_port = None
 dbuging = config['DEFAULT']['DEBUG']
@@ -211,10 +216,7 @@ def receive_data_from_exp():
         pic_message = pic_message.split("\t")
         return pic_message
 
-
-
-if __name__ == "__main__":
-
+def do_experiment():
     if serial_lock() == True:
         o, ok=do_config()
         if ok == True:
@@ -234,4 +236,14 @@ if __name__ == "__main__":
                         writer.writerow(exp_data)
                     else:
                         break
+
+if __name__ == "__main__":
+    if config['DEFAULT']['ROSSA'] == "on":
+        while True:
+            time_now= int(time.time())
+            if time_now >=(last_time+dt):
+                do_experiment()
+                last_time = time_now
+    else:
+        do_experiment()
             
